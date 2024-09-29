@@ -12,7 +12,7 @@ func main() {
 	flag.Parse()
 
 	infolog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errlog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorlog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	mux := http.NewServeMux()
 
@@ -24,7 +24,13 @@ func main() {
 	mux.HandleFunc("/snippet/view", snippetView)
 	mux.HandleFunc("/snippet/create", snippetCreate)
 
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorlog,
+		Handler:  mux,
+	}
+
 	infolog.Printf("Starting sever on %s", *addr)
-	err := http.ListenAndServe(*addr, mux)
-	errlog.Fatal(err)
+	err := srv.ListenAndServe()
+	errorlog.Fatal(err)
 }
