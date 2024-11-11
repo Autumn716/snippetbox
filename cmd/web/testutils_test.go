@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Autumn716/snippetbox/internal/models"
+	"github.com/Autumn716/snippetbox/internal/models/mocks"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 )
@@ -30,8 +30,8 @@ func newTestApplication(t *testing.T) *application {
 	return &application{
 		errorLog:       log.New(io.Discard, "", 0),
 		infoLog:        log.New(io.Discard, "", 0),
-		snippets:       &models.SnippetModel{},
-		users:          &models.UserModel{},
+		snippets:       &mocks.SnippetModel{},
+		users:          &mocks.UserModel{},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
